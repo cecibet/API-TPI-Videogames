@@ -24,26 +24,31 @@ namespace API_TPI.Controllers
             return Ok(videogameToReturn);
         }
 
-        //[HttpPost]
-        //public ActionResult<VideogameDto> AddVideogame(VideogameToCreateDto videogame, VideogamesData data)
-        //{
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-        //    var newVideogame = new VideogameDto
-        //    {
-        //        Name = videogame.Name,
-        //        Genre = videogame.Genre,
-        //        Platform = videogame.Platform,
-        //    };
+        public ActionResult<VideogameDto> AddVideogame(VideogameToCreateDto videogame)
+        {
+            var idMaxReview = VideogamesData.ActualInstance.Videogames.Max(v => v.Id);
 
-        //    data.Videogames.Add(newVideogame);
+            var newVideogame = new VideogameDto
+            {
+                Id = ++idMaxReview,
+                Name = videogame.Name,
+                Genre = videogame.Genre,
+                Platform = videogame.Platform,
+            };
 
-        //    return CreatedAtRoute(
-        //        "GetVideogame",
-        //        new
-        //        {
-        //            IdVideogame = newVideogame.Id
-        //        },
-        //        newVideogame);
-        //}
+            VideogamesData.ActualInstance.Videogames.Add(newVideogame);
+
+            return CreatedAtRoute(
+                "GetVideogame",
+                new
+                {
+                    Id = newVideogame.Id
+                },
+                newVideogame);
+        }
     }
 }

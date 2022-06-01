@@ -80,5 +80,10 @@ namespace API_TPI
                 }
             };
         }
+
+        internal static void Add(VideogameDto newVideogame)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
